@@ -1,47 +1,29 @@
-// What is Mocha?
-// Mocha is a test running framework
-// It is used to test 
-
+// Assert is a testing framework
 const assert = require('assert');
+// ganache provide a route to web3
+const ganache = require('ganache-cli');
+// web3 Library
+const Web3 = require('web3');
+// Import ABI and ByteCode from compile,js file
+const {interface , bytecode} = require('../compile')
+// Create web3 object
+const web3 = new Web3(ganache.provider())
 
-// It requires the local network on our machine
-const ganache = require('ganache-cli')
-// Web 3 Class that will help us create web instance
-const Web3 = require('web3')
+let accounts;
+let inbox;
+// Asynv Function which takes some time to execute
+beforeEach( async() => {
+    //  await will wait for the result
+    // get Accounts of local network
+    accounts = await web3.eth.getAccounts();
 
-// Create Web3 instance and provide the provider
-const web3 = new Web3(ganache.provider());
-
-// CLass that we will be testing with Mocha
-class Car
-{
-    Park()
-    {
-        return 'Stopped';
-    }
-    Drive()
-    {
-        return 'vroom'
-    }
-}
-
-// Test Initialization code
-// Eg car object is used in both it tests
-let mycar;
-beforeEach(() =>{
-    mycar = new Car();
+    inbox = await new web3.eth.Contract(JSON.parse(interface))
+        .deploy({ data : bytecode , arguments : ['Hi There!']})
+        .send({ from : accounts[0] , gas : '1000000'})
 });
 
-// Describe --> Used to group multpile it Tests
-// Arg 1 -> Any String as object name, Arg 2 -> Arrow Fucntion 
-describe('Car',() => {
-    // Inside it we test out funtionality
-    // Arg 1 -> object naem Arg-2 -> Arrow Function
-    it('Can park' , ()=>{
-        // assert equal funciton to comapre expected and real value
-        assert.equal(mycar.Park() , 'Stopped')
-    });
-    it('Can Drive' , ()=>{
-        assert.equal(mycar.Drive() , 'vroom')
+describe("InboxContract", () => {
+    it("DeployContract", () => {
+        console.log(inbox);
     });
 });

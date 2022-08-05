@@ -13,12 +13,5 @@ contract Inbox
     }
     function setMessage(string memory newMessage) public {
         message = newMessage;
-    }
-    // We dont need this function if message is public
-    // If you deploy contract messgae button will already be there 
-    // we dont need a get message function
-    function getMessage() public view returns (string memory) {
-        return message;
-    }
-
+    }s
 }

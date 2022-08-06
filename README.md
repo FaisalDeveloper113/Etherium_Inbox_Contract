@@ -11,3 +11,7 @@ This file is used to write test case in inbox.text.js file
 
 # Inbox.sol
 This is the Actual file where smart contract is written Solidity
+
+# Command to Install truffle wallet
+npm install @truffle/hdwallet-provide
+
